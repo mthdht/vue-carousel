@@ -2,8 +2,8 @@
     <div class="w-full relative">
         <slot></slot>
         <div class="navigation flex justify-between absolute fa-2x w-full px-8" :class="controlsColor" :style="controlsStyle">
-            <button @click="nextSlide"><font-awesome-icon :icon="leftIcon" /></button>
-            <button @click="prevSlide"><font-awesome-icon :icon="rightIcon" /></button>
+            <button @click="prevSlide"><font-awesome-icon :icon="leftIcon" /></button>
+            <button @click="nextSlide"><font-awesome-icon :icon="rightIcon" /></button>
         </div>
         <div class="navigation flex justify-center absolute w-full px-8" :class="controlsColor" :style="controlsBulletStyle">
             <button @click="showSlide(n)" v-for="n in slidesLength" :key="n" class="mr-2"><font-awesome-icon icon="circle" /></button>
@@ -21,7 +21,7 @@
         name: "Carousel",
         props: {
             icon: String,
-            controlColor: String
+            color: String
         },
         data: function () {
             return {
@@ -41,6 +41,9 @@
             this.slides.forEach((slide, index) => {
                 slide.index = index
             });
+            window.addEventListener('keyup', (event) => {
+                event.keyCode === 37 ? this.prevSlide() : event.keyCode === 39 ? this.nextSlide() : null 
+            })
         },
         computed: {
             leftIcon() {
@@ -50,7 +53,7 @@
                 return this.icon + '-right'
             },
             controlsColor() {
-                return "text-" + this.controlColor + ((this.controlColor !== "white" && this.controlColor !== "black") ? "-500" : "")
+                return "text-" + this.color + ((this.color !== "white" && this.color !== "black") ? "-500" : "")
             },
             slidesLength() {
                 return this.slides.length
