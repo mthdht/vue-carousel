@@ -1,12 +1,12 @@
 <template>
-    <div class="w-full relative">
+    <div class="w-full relative overflow-x-hidden">
         <slot></slot>
         <div class="navigation flex justify-between absolute fa-2x w-full px-8" :class="controlsColor" :style="controlsStyle">
             <button @click="prevSlide"><font-awesome-icon :icon="leftIcon" /></button>
             <button @click="nextSlide"><font-awesome-icon :icon="rightIcon" /></button>
         </div>
         <div class="navigation flex justify-center absolute w-full px-8" :class="controlsColor" :style="controlsBulletStyle">
-            <button @click="showSlide(n)" v-for="n in slidesLength" :key="n" class="mr-2"><font-awesome-icon icon="circle" /></button>
+            <button @click="showSlide(n)" v-for="n in slides.length" :key="n" class="mr-2" :class="{ active: currentSlide == n-1 }"><font-awesome-icon icon="circle" /></button>
         </div>
     </div>
 </template>
@@ -20,12 +20,18 @@
     export default {
         name: "Carousel",
         props: {
-            icon: String,
-            color: String
+            icon: {
+                String,
+                default: "arrow"
+            },
+            color: {
+                String,
+                default: "black"
+            }
         },
         data: function () {
             return {
-                index: 0,
+                currentSlide: 0,
                 slides: 0,
                 controlsStyle: {
                     top: '50%',
@@ -33,7 +39,8 @@
                 },
                 controlsBulletStyle: {
                     bottom: '10%',
-                }
+                },
+                direction: null
             }
         },
         mounted: function () {
@@ -54,20 +61,20 @@
             },
             controlsColor() {
                 return "text-" + this.color + ((this.color !== "white" && this.color !== "black") ? "-500" : "")
-            },
-            slidesLength() {
-                return this.slides.length
-            }
+            } 
         },
         methods: {
             nextSlide() {
-                this.index == this.slides.length -1 ? this.index = 0 : this.index++
+                this.direction = 'right'
+                this.currentSlide == this.slides.length -1 ? this.currentSlide = 0 : this.currentSlide++
             },
             prevSlide() {
-                this.index === 0 ? this.index = this.slides.length -1 : this.index--
+                this.direction = 'left'
+                this.currentSlide === 0 ? this.currentSlide = this.slides.length -1 : this.currentSlide--
             },
             showSlide(n) {
-                this.index = n - 1
+                this.currentSlide > n - 1 ? this.direction = 'left' : this.direction = 'right'
+                this.currentSlide = n - 1
             }
         },
         components: {
@@ -76,3 +83,9 @@
 
     }
 </script>
+
+<style scoped>
+.active {
+    @apply text-gray-200;
+}
+</style>

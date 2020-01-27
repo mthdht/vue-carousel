@@ -14,7 +14,7 @@ export default Vue.extend({
 
 <template>
   <div id="app">
-    <Carousel icon="arrow-circle" color="blue">
+    <Carousel icon="arrow" color="red">
       <Slide>
         <div class="absolute inset-0 flex justify-center items-center">
           Bonjour slide 1
