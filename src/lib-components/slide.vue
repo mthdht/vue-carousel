@@ -1,6 +1,6 @@
 <template>
     <transition :name="transition">
-    <div class="w-full relative" v-show="visible">
+    <div class="slide" v-show="visible">
         <slot></slot>
     </div>
     </transition>
@@ -26,36 +26,59 @@
 </script>
 
 <style scoped>
-.slide-right-enter-active {
-    animation: slideRightEnter 1s ease
+.slide {
+    width: 100%;
+    position: relative;
 }
 
 .slide-left-enter-active {
-    animation: slideLeftEnter 1s ease
-}
-
-.slide-right-leave-active {
-    animation: slideRightLeave 1s ease;
-    @apply absolute inset-0;
+    animation: slideLeftEnter 1s ease;
 }
 
 .slide-left-leave-active {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     animation: slideLeftLeave 1s ease;
-    @apply absolute inset-0;
 }
 
-@keyframes slideRightEnter {
+.slide-right-enter-active {
+    animation: slideRightEnter 1s ease;
+}
+
+.slide-right-leave-active {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    animation: slideRightLeave 1s ease;
+}
+
+
+@keyframes slideLeftEnter {
     from {
-        transform: translateX(100%);
+        transform: translateX(-100%);
     }
     to {
         transform: translateX(0);
     }
 }
 
-@keyframes slideLeftEnter {
+@keyframes slideLeftLeave {
     from {
-        transform: translateX(-100%);
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes slideRightEnter {
+    from {
+        transform: translateX(100%);
     }
     to {
         transform: translateX(0);
@@ -68,15 +91,6 @@
     }
     to {
         transform: translateX(-100%);
-    }
-}
-
-@keyframes slideLeftLeave {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(100%);
     }
 }
 </style>

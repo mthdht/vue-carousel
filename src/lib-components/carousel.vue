@@ -1,12 +1,12 @@
 <template>
-    <div class="w-full relative overflow-x-hidden">
+    <div class="carousel">
         <slot></slot>
-        <div class="navigation flex justify-between absolute fa-2x w-full px-8" :class="controlsColor" :style="controlsStyle">
-            <button @click="prevSlide"><font-awesome-icon :icon="leftIcon" /></button>
-            <button @click="nextSlide"><font-awesome-icon :icon="rightIcon" /></button>
+        <div class="navigation" :style="controlsStyle">
+            <button @click="prevSlide" :class="color"><font-awesome-icon :icon="leftIcon" size="2x"/></button>
+            <button @click="nextSlide" :class="color"><font-awesome-icon :icon="rightIcon" size="2x"/></button>
         </div>
-        <div class="navigation flex justify-center absolute w-full px-8" :class="controlsColor" :style="controlsBulletStyle">
-            <button @click="showSlide(n)" v-for="n in slides.length" :key="n" class="mr-2" :class="{ active: currentSlide == n-1 }"><font-awesome-icon icon="circle" /></button>
+        <div class="navigation-bullets" :class="controlsColor" style="bottom:10%">
+            <button @click="showSlide(n)" v-for="n in slides.length" :key="n" class="bullet" :class="color"><font-awesome-icon icon="circle" :class="{ active: currentSlide == n-1 }"/></button>
         </div>
     </div>
 </template>
@@ -21,12 +21,16 @@
         name: "Carousel",
         props: {
             icon: {
-                String,
+                type: String,
                 default: "arrow"
             },
             color: {
-                String,
+                type: String,
                 default: "black"
+            },
+            autoplay: {
+                type: String,
+                default: false
             }
         },
         data: function () {
@@ -36,9 +40,6 @@
                 controlsStyle: {
                     top: '50%',
                     transform: 'translateY(-50%)'
-                },
-                controlsBulletStyle: {
-                    bottom: '10%',
                 },
                 direction: null
             }
@@ -58,10 +59,7 @@
             },
             rightIcon() {
                 return this.icon + '-right'
-            },
-            controlsColor() {
-                return "text-" + this.color + ((this.color !== "white" && this.color !== "black") ? "-500" : "")
-            } 
+            }
         },
         methods: {
             nextSlide() {
@@ -85,7 +83,81 @@
 </script>
 
 <style scoped>
+
+* {
+    box-sizing: border-box;
+}
 .active {
-    @apply text-gray-200;
+    color: #4A5568;
+}
+
+.carousel {
+    width: 100%;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.navigation, .navigation-bullets {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    width: 100%;
+    padding: 0 15px;
+}
+
+.navigation-bullets {
+    justify-content: center;
+}
+
+.bullet {
+}
+
+.black {
+    color: #000;
+}
+
+.white {
+    color: #FFF;
+}
+
+.red {
+    color: #F56565;
+}
+
+.orange {
+    color: #ED8936;
+}
+
+.yellow {
+    color: #ECC94B;
+}
+
+.green {
+    color: #48BB78;
+}
+
+.teal {
+    color: #38B2AC;
+}
+
+.indigo {
+    color: #667EEA;
+}
+
+.purple {
+    color: #9F7AEA;
+}
+
+.pink {
+    color: #ED64A6;
+}
+
+.blue {
+    color: #4299E1;
+}
+
+button {
+    background: transparent;
+    border: 0;
 }
 </style>

@@ -1,27 +1,73 @@
-var script = {
-  name: 'VueCarouselSample',
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faCircle, faArrowCircleLeft, faArrowCircleRight, faArrowAltCircleLeft, faArrowAltCircleRight, faArrowLeft, faArrowRight, faChevronLeft, faChevronRight, faChevronCircleLeft, faChevronCircleRight, faCaretLeft, faCaretRight, faCaretSquareLeft, faCaretSquareRight, faAngleRight, faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-  // vue component name
-  data() {
+//
+library.add(faCircle, faArrowCircleLeft, faArrowCircleRight, faArrowAltCircleLeft, faArrowAltCircleRight, faArrowLeft, faArrowRight, faChevronLeft, faChevronRight, faChevronCircleLeft, faChevronCircleRight, faCaretLeft, faCaretRight, faCaretSquareLeft, faCaretSquareRight, faAngleRight, faAngleLeft);
+var script = {
+  name: "Carousel",
+  props: {
+    icon: {
+      type: String,
+      default: "arrow"
+    },
+    color: {
+      type: String,
+      default: "black"
+    },
+    autoplay: {
+      type: String,
+      default: false
+    }
+  },
+  data: function () {
     return {
-      counter: 5,
-      initCounter: 5
+      currentSlide: 0,
+      slides: 0,
+      controlsStyle: {
+        top: '50%',
+        transform: 'translateY(-50%)'
+      },
+      direction: null
     };
   },
-
-  methods: {
-    increment(arg) {
-      if (typeof arg !== 'number') this.counter += 1;else this.counter += arg;
+  mounted: function () {
+    this.slides = this.$children, this.slides.forEach((slide, index) => {
+      slide.index = index;
+    });
+    window.addEventListener('keyup', event => {
+      event.keyCode === 37 ? this.prevSlide() : event.keyCode === 39 ? this.nextSlide() : null;
+    });
+  },
+  computed: {
+    leftIcon() {
+      return this.icon + '-left';
     },
 
-    decrement(arg) {
-      if (typeof arg !== 'number') this.counter -= 1;else this.counter -= arg;
-    },
-
-    reset() {
-      this.counter = this.initCounter;
+    rightIcon() {
+      return this.icon + '-right';
     }
 
+  },
+  methods: {
+    nextSlide() {
+      this.direction = 'right';
+      this.currentSlide == this.slides.length - 1 ? this.currentSlide = 0 : this.currentSlide++;
+    },
+
+    prevSlide() {
+      this.direction = 'left';
+      this.currentSlide === 0 ? this.currentSlide = this.slides.length - 1 : this.currentSlide--;
+    },
+
+    showSlide(n) {
+      this.currentSlide > n - 1 ? this.direction = 'left' : this.direction = 'right';
+      this.currentSlide = n - 1;
+    }
+
+  },
+  components: {
+    FontAwesomeIcon
   }
 };
 
@@ -165,32 +211,55 @@ var __vue_render__ = function () {
   var _c = _vm._self._c || _h;
 
   return _c('div', {
-    staticClass: "vue-carousel-sample"
-  }, [_c('p', [_vm._v("The counter is set to "), _c('b', [_vm._v(_vm._s(_vm.counter))]), _vm._v(".")]), _vm._v(" "), _c('button', {
+    staticClass: "carousel"
+  }, [_vm._t("default"), _vm._v(" "), _c('div', {
+    staticClass: "navigation",
+    style: _vm.controlsStyle
+  }, [_c('button', {
+    class: _vm.color,
     on: {
-      "click": _vm.increment
+      "click": _vm.prevSlide
     }
-  }, [_vm._v("\n    Click +1\n  ")]), _vm._v(" "), _c('button', {
-    on: {
-      "click": _vm.decrement
+  }, [_c('font-awesome-icon', {
+    attrs: {
+      "icon": _vm.leftIcon,
+      "size": "2x"
     }
-  }, [_vm._v("\n    Click -1\n  ")]), _vm._v(" "), _c('button', {
+  })], 1), _vm._v(" "), _c('button', {
+    class: _vm.color,
     on: {
-      "click": function ($event) {
-        return _vm.increment(5);
+      "click": _vm.nextSlide
+    }
+  }, [_c('font-awesome-icon', {
+    attrs: {
+      "icon": _vm.rightIcon,
+      "size": "2x"
+    }
+  })], 1)]), _vm._v(" "), _c('div', {
+    staticClass: "navigation-bullets",
+    class: _vm.controlsColor,
+    staticStyle: {
+      "bottom": "10%"
+    }
+  }, _vm._l(_vm.slides.length, function (n) {
+    return _c('button', {
+      key: n,
+      staticClass: "bullet",
+      class: _vm.color,
+      on: {
+        "click": function ($event) {
+          return _vm.showSlide(n);
+        }
       }
-    }
-  }, [_vm._v("\n    Click +5\n  ")]), _vm._v(" "), _c('button', {
-    on: {
-      "click": function ($event) {
-        return _vm.decrement(5);
+    }, [_c('font-awesome-icon', {
+      class: {
+        active: _vm.currentSlide == n - 1
+      },
+      attrs: {
+        "icon": "circle"
       }
-    }
-  }, [_vm._v("\n    Click -5\n  ")]), _vm._v(" "), _c('button', {
-    on: {
-      "click": _vm.reset
-    }
-  }, [_vm._v("\n    Reset\n  ")])]);
+    })], 1);
+  }), 0)], 2);
 };
 
 var __vue_staticRenderFns__ = [];
@@ -198,8 +267,8 @@ var __vue_staticRenderFns__ = [];
 
 const __vue_inject_styles__ = function (inject) {
   if (!inject) return;
-  inject("data-v-496a8178_0", {
-    source: ".vue-carousel-sample[data-v-496a8178]{display:block;width:400px;margin:25px auto;border:1px solid #ccc;background:#eaeaea;text-align:center;padding:25px}.vue-carousel-sample p[data-v-496a8178]{margin:0 0 1em}",
+  inject("data-v-2ab53c07_0", {
+    source: "*[data-v-2ab53c07]{box-sizing:border-box}.active[data-v-2ab53c07]{color:#4a5568}.carousel[data-v-2ab53c07]{width:100%;position:relative;overflow-x:hidden}.navigation[data-v-2ab53c07],.navigation-bullets[data-v-2ab53c07]{display:flex;justify-content:space-between;position:absolute;width:100%;padding:0 15px}.navigation-bullets[data-v-2ab53c07]{justify-content:center}.black[data-v-2ab53c07]{color:#000}.white[data-v-2ab53c07]{color:#fff}.red[data-v-2ab53c07]{color:#f56565}.orange[data-v-2ab53c07]{color:#ed8936}.yellow[data-v-2ab53c07]{color:#ecc94b}.green[data-v-2ab53c07]{color:#48bb78}.teal[data-v-2ab53c07]{color:#38b2ac}.indigo[data-v-2ab53c07]{color:#667eea}.purple[data-v-2ab53c07]{color:#9f7aea}.pink[data-v-2ab53c07]{color:#ed64a6}.blue[data-v-2ab53c07]{color:#4299e1}button[data-v-2ab53c07]{background:0 0;border:0}",
     map: undefined,
     media: undefined
   });
@@ -207,7 +276,7 @@ const __vue_inject_styles__ = function (inject) {
 /* scoped */
 
 
-const __vue_scope_id__ = "data-v-496a8178";
+const __vue_scope_id__ = "data-v-2ab53c07";
 /* module identifier */
 
 const __vue_module_identifier__ = undefined;
@@ -223,11 +292,95 @@ const __vue_component__ = normalizeComponent({
   staticRenderFns: __vue_staticRenderFns__
 }, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, createInjector, undefined, undefined);
 
+//
+//
+//
+//
+//
+//
+//
+//
+var script$1 = {
+  name: "Slide",
+  data: function () {
+    return {
+      index: 0
+    };
+  },
+  computed: {
+    visible() {
+      return this.index == this.$parent.currentSlide;
+    },
+
+    transition() {
+      return 'slide-' + this.$parent.direction;
+    }
+
+  }
+};
+
+/* script */
+const __vue_script__$1 = script$1;
+/* template */
+
+var __vue_render__$1 = function () {
+  var _vm = this;
+
+  var _h = _vm.$createElement;
+
+  var _c = _vm._self._c || _h;
+
+  return _c('transition', {
+    attrs: {
+      "name": _vm.transition
+    }
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.visible,
+      expression: "visible"
+    }],
+    staticClass: "slide"
+  }, [_vm._t("default")], 2)]);
+};
+
+var __vue_staticRenderFns__$1 = [];
+/* style */
+
+const __vue_inject_styles__$1 = function (inject) {
+  if (!inject) return;
+  inject("data-v-0b64987f_0", {
+    source: ".slide[data-v-0b64987f]{width:100%;position:relative}.slide-left-enter-active[data-v-0b64987f]{animation:slideLeftEnter-data-v-0b64987f 1s ease}.slide-left-leave-active[data-v-0b64987f]{position:absolute;top:0;bottom:0;left:0;right:0;animation:slideLeftLeave-data-v-0b64987f 1s ease}.slide-right-enter-active[data-v-0b64987f]{animation:slideRightEnter-data-v-0b64987f 1s ease}.slide-right-leave-active[data-v-0b64987f]{position:absolute;top:0;bottom:0;left:0;right:0;animation:slideRightLeave-data-v-0b64987f 1s ease}@keyframes slideLeftEnter-data-v-0b64987f{from{transform:translateX(-100%)}to{transform:translateX(0)}}@keyframes slideLeftLeave-data-v-0b64987f{from{transform:translateX(0)}to{transform:translateX(100%)}}@keyframes slideRightEnter-data-v-0b64987f{from{transform:translateX(100%)}to{transform:translateX(0)}}@keyframes slideRightLeave-data-v-0b64987f{from{transform:translateX(0)}to{transform:translateX(-100%)}}",
+    map: undefined,
+    media: undefined
+  });
+};
+/* scoped */
+
+
+const __vue_scope_id__$1 = "data-v-0b64987f";
+/* module identifier */
+
+const __vue_module_identifier__$1 = undefined;
+/* functional template */
+
+const __vue_is_functional_template__$1 = false;
+/* style inject SSR */
+
+/* style inject shadow dom */
+
+const __vue_component__$1 = normalizeComponent({
+  render: __vue_render__$1,
+  staticRenderFns: __vue_staticRenderFns__$1
+}, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, false, createInjector, undefined, undefined);
+
 /* eslint-disable import/prefer-default-export */
 
 var components = /*#__PURE__*/Object.freeze({
-  __proto__: null,
-  VueCarouselSample: __vue_component__
+    __proto__: null,
+    Carousel: __vue_component__,
+    Slide: __vue_component__$1
 });
 
 // Import vue components
@@ -261,4 +414,4 @@ if (GlobalVue) {
 } // Default export is library as a whole, registered via Vue.use()
 
 export default plugin;
-export { __vue_component__ as VueCarouselSample };
+export { __vue_component__ as Carousel, __vue_component__$1 as Slide };

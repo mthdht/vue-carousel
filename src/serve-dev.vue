@@ -14,18 +14,18 @@ export default Vue.extend({
 
 <template>
   <div id="app">
-    <Carousel icon="arrow" color="red">
+    <Carousel icon="arrow-alt-circle" color="blue" autoplay="true">
       <Slide>
-        <div class="absolute inset-0 flex justify-center items-center">
+        <div class="" style="position:absolute">
           Bonjour slide 1
         </div>
-        <img src="https://picsum.photos/600/300" alt="" class="w-full">
+        <img src="https://picsum.photos/600/300" alt="" style="width: 100%">
       </Slide>
       <Slide>
-        <div class="absolute inset-0 flex justify-center items-center">
+        <div style="position:absolute">
           Bonjour slide 2
         </div>
-        <img src="https://picsum.photos/600/300" alt="" class="w-full">
+        <img src="https://picsum.photos/600/300" alt="" style="width: 100%">
       </Slide>
     </Carousel>
   </div>

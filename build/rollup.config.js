@@ -28,7 +28,7 @@ const baseConfig = {
       }),
       commonjs(),
       alias({
-        resolve: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
+        resolve: ['.js', '.jsx', '.ts', '.tsx', '.vue', '.css'],
         entries: {
           '@': path.resolve(projectRoot, 'src'),
         },
@@ -42,7 +42,7 @@ const baseConfig = {
     },
     babel: {
       exclude: 'node_modules/**',
-      extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue'],
+      extensions: ['.js', '.jsx', '.ts', '.tsx', '.vue', '.css'],
     },
   },
 };
