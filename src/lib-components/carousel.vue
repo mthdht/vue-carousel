@@ -1,11 +1,11 @@
 <template>
-    <div class="carousel">
+    <div class="carousel" @mouseenter="stopSlide" @mouseleave="startSlide">
         <slot></slot>
-        <div class="navigation" :style="controlsStyle">
+        <div class="navigation" :style="controlsStyle" v-if="arrows">
             <button @click="prevSlide" :class="color"><font-awesome-icon :icon="leftIcon" size="2x"/></button>
             <button @click="nextSlide" :class="color"><font-awesome-icon :icon="rightIcon" size="2x"/></button>
         </div>
-        <div class="navigation-bullets" :class="controlsColor" style="bottom:10%">
+        <div class="navigation-bullets" style="bottom:10%" v-if="bullets">
             <button @click="showSlide(n)" v-for="n in slides.length" :key="n" class="bullet" :class="color"><font-awesome-icon icon="circle" :class="{ active: currentSlide == n-1 }"/></button>
         </div>
     </div>
@@ -29,7 +29,19 @@
                 default: "black"
             },
             autoplay: {
-                type: String,
+                type: Boolean,
+                default: false
+            },
+            duration: {
+                type: Number,
+                default: 3500
+            },
+            arrows: {
+                type: Boolean,
+                default: true
+            },
+            bullets: {
+                type: Boolean,
                 default: false
             }
         },
@@ -41,7 +53,8 @@
                     top: '50%',
                     transform: 'translateY(-50%)'
                 },
-                direction: null
+                direction: null,
+                interval: null,
             }
         },
         mounted: function () {
@@ -52,6 +65,11 @@
             window.addEventListener('keyup', (event) => {
                 event.keyCode === 37 ? this.prevSlide() : event.keyCode === 39 ? this.nextSlide() : null 
             })
+            if (this.autoplay) {
+                this.interval = setInterval(() => {
+                    this.nextSlide()
+                }, this.duration)
+            }
         },
         computed: {
             leftIcon() {
@@ -73,6 +91,18 @@
             showSlide(n) {
                 this.currentSlide > n - 1 ? this.direction = 'left' : this.direction = 'right'
                 this.currentSlide = n - 1
+            },
+            stopSlide() {
+                if (this.autoplay) {
+                    this.interval = clearInterval(this.interval)
+                }
+            },
+            startSlide() {
+                if (this.autoplay) {
+                    this.interval = setInterval(() => {
+                        this.nextSlide()
+                    }, this.duration)
+                }
             }
         },
         components: {

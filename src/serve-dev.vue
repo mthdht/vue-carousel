@@ -14,7 +14,7 @@ export default Vue.extend({
 
 <template>
   <div id="app">
-    <Carousel icon="arrow-alt-circle" color="blue" autoplay="true">
+    <Carousel icon="angle" color="blue">
       <Slide>
         <div class="" style="position:absolute">
           Bonjour slide 1

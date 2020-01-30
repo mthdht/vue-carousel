@@ -1,7 +1,7 @@
 {
   "name": "@mthdht/vue-carousel",
   "version": "1.0.0",
-  "description": "A VueJs carousel with tailwindcss",
+  "description": "A VueJs carousel",
   "main": "dist/vue-carousel.ssr.js",
   "browser": "dist/vue-carousel.esm.js",
   "module": "dist/vue-carousel.esm.js",
@@ -21,8 +21,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.26",
     "@fortawesome/free-solid-svg-icons": "^5.12.0",
-    "@fortawesome/vue-fontawesome": "^0.1.9",
-    "tailwindcss": "^1.1.4"
+    "@fortawesome/vue-fontawesome": "^0.1.9"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",
@@ -36,11 +35,13 @@
     "@vue/cli-service": "^4.1.0",
     "cross-env": "^6.0.3",
     "css-loader": "^3.4.2",
+    "eslint": "^6.8.0",
+    "eslint-plugin-vue": "^6.1.2",
     "minimist": "^1.2.0",
-    "rollup": "^1.27.13",
+    "rollup": "^1.30.1",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-terser": "^5.1.3",
-    "rollup-plugin-vue": "^5.1.5",
+    "rollup-plugin-vue": "^5.1.6",
     "style-loader": "^1.1.3",
     "vue": "^2.6.10",
     "vue-template-compiler": "^2.6.10"
